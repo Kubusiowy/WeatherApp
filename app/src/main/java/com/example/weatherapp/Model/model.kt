@@ -18,7 +18,9 @@ data class Current(
     val condition: Condition,
     val humidity:Int,
     val wind_mph: Double,
-    val wind_kph: Double
+    val wind_kph: Double,
+    val pressure_mb: Double,
+    val wind_dir: Char
 )
 
 data class Condition(

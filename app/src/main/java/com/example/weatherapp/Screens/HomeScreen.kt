@@ -15,9 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -30,6 +33,8 @@ import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,19 +74,50 @@ fun HomeScreen(viewModel: WeatherViewModel)
             }
         }else{
 
-                Column(modifier = Modifier.fillMaxSize())
+            Card(modifier = Modifier.padding(top = 15.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFFE0F7FA)
+                ),
+                shape = RoundedCornerShape(16.dp)
+                ) {
+
+
+                Column(modifier = Modifier.padding(20.dp))
                 {
-                    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
-                        ){
-                       Column(){
-                           Text(text = pogoda.location.name)
-                           Text(text = "${pogoda.current.temp_c} °C")
-                       }
+                    ) {
+                        Column() {
+                            Text(
+                                text = "${pogoda.location.name}, ${pogoda.location.country}",
+                                fontSize = 26.sp,
+                                fontWeight = FontWeight.Black
+                            )
+                            Text(text = pogoda.location.localtime, fontSize = 10.sp)
+                            Row(verticalAlignment = Alignment.CenterVertically)
+                            {
+                                AsyncImage(
+                                    model = "https:${pogoda.current.condition.icon}",
+                                    contentDescription = "icon", modifier = Modifier.size(50.dp)
+                                )
+                                Text(text = "${pogoda.current.condition.text}")
+                            }
+
+                            Text(text = "stopnie celcjusza: ${pogoda.current.temp_c} °C")
+                            Text(text = "stopnie farenhajta: ${pogoda.current.temp_f} °F")
+                            Text(text = "prędkość wiatru: ${pogoda.current.wind_kph} km/h, ${pogoda.current.wind_mph} mph")
+                            Text(text = "kierunek wiatru: ${pogoda.current.wind_dir}")git
+                            Text(text = "ciśnienie: ${pogoda.current.pressure_mb}")
+
+
+                        }
                     }
                 }
 
-
+            }
 
 
             }
