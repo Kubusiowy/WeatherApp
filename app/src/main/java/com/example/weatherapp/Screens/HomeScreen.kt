@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
@@ -56,6 +57,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(viewModel: WeatherViewModel)
 {
+    val context = LocalContext.current
     val pogoda = viewModel.weatherResponse
     val error =viewModel.errorMessage
     var city by remember { mutableStateOf<String>("") }
@@ -65,6 +67,9 @@ fun HomeScreen(viewModel: WeatherViewModel)
 
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = refreshing)
 
+    LaunchedEffect(Unit) {
+        viewModel.loadLastCity(context)
+    }
 
     SwipeRefresh(
         state = swipeRefreshState,
@@ -98,7 +103,7 @@ fun HomeScreen(viewModel: WeatherViewModel)
                 singleLine = true,
                 trailingIcon =  {
                     Icon(imageVector = Icons.Default.Search, contentDescription = null, modifier = Modifier.clickable{
-                        viewModel.getWeather(city)
+                        viewModel.getWeather(city, context)
                     })
                 },
                 modifier = Modifier.weight(1f)

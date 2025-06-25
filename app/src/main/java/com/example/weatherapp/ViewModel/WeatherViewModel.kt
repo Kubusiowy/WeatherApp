@@ -1,5 +1,6 @@
 package com.example.weatherapp.ViewModel
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.Model.WeatherResponse
+import com.example.weatherapp.PrefsHelper.PrefsHelper
 import com.example.weatherapp.Retrofit.RetroiftClient
 import kotlinx.coroutines.launch
 
@@ -17,9 +19,12 @@ class WeatherViewModel:ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
 
 
-    fun getWeather(city:String){
+    fun getWeather(city:String,context:Context? = null){
         Log.d("WeatherViewModel", "Pobieram pogodę dla: $city")
         lastCity = city
+        context?.let{
+            PrefsHelper.saveCity(it, city)
+        }
         viewModelScope.launch {
 
             try{
@@ -41,6 +46,13 @@ class WeatherViewModel:ViewModel() {
                 errorMessage = "Wyjątek: ${e.message}"
             }
 
+        }
+    }
+
+    fun loadLastCity(context: Context) {
+        val lastCity = PrefsHelper.getCity(context)
+        if (!lastCity.isNullOrBlank()) {
+            getWeather(lastCity, context)
         }
     }
 
