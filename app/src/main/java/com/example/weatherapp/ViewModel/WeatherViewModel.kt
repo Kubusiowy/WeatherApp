@@ -13,11 +13,13 @@ import kotlinx.coroutines.launch
 class WeatherViewModel:ViewModel() {
     var weatherResponse by mutableStateOf<WeatherResponse?>(null)
     private set
-
+    var lastCity:String = ""
     var errorMessage by mutableStateOf<String?>(null)
 
 
     fun getWeather(city:String){
+        Log.d("WeatherViewModel", "Pobieram pogodę dla: $city")
+        lastCity = city
         viewModelScope.launch {
 
             try{
@@ -40,6 +42,18 @@ class WeatherViewModel:ViewModel() {
             }
 
         }
+    }
+
+    fun refreshWeather() {
+
+
+        if(!lastCity.isNullOrBlank()){
+            Log.d("API", "odwiezono dane ")
+            getWeather(lastCity)
+        }
+
+
+
     }
 
 }

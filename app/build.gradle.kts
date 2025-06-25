@@ -78,5 +78,11 @@ dependencies {
     //icons
     implementation("io.coil-kt:coil-compose:2.6.0")
 
+    //refreshing
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.33.2-alpha")
+    //systembnars colors
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
+
+
 
 }

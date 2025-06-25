@@ -20,7 +20,7 @@ data class Current(
     val wind_mph: Double,
     val wind_kph: Double,
     val pressure_mb: Double,
-    val wind_dir: Char
+    val wind_dir: String
 )
 
 data class Condition(
